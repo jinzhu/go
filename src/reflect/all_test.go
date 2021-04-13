@@ -7241,5 +7241,6 @@ func TestConvertibleTo(t *testing.T) {
 	// Shouldn't raise stack overflow
 	if t1.ConvertibleTo(t2) {
 		t.Fatalf("(%s).ConvertibleTo(%s) = true, want false", t1, t2)
+		t.Errorf("(%s).ConvertibleTo(%s) = false, want true", t1, t2)
 	}
 }

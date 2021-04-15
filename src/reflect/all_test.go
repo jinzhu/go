@@ -14,6 +14,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"reflect"
 	. "reflect"
 	"reflect/internal/example1"
 	"reflect/internal/example2"
@@ -7234,13 +7235,35 @@ func iterateToString(it *MapIter) string {
 	return "[" + strings.Join(got, ", ") + "]"
 }
 
+type T11 struct {
+	v struct {
+		f int `tag:"tag1"`
+	}
+}
+
+type T22 struct {
+	v struct {
+		f int `tag:"tag2"`
+	}
+}
+
+var (
+	v1 T11
+	v2 T22
+)
+
 func TestConvertibleTo(t *testing.T) {
+	v1 = (T11)(v2) // This type conversion is OK.
+	ok := reflect.TypeOf(T22{}).ConvertibleTo(reflect.TypeOf(T11{}))
+	if !ok {
+		fmt.Println("should be convertible")
+	}
+
 	t1 := ValueOf(example1.MyStruct{}).Type()
 	t2 := ValueOf(example2.MyStruct{}).Type()
 
 	// Shouldn't raise stack overflow
 	if t1.ConvertibleTo(t2) {
-		t.Fatalf("(%s).ConvertibleTo(%s) = true, want false", t1, t2)
 		t.Errorf("(%s).ConvertibleTo(%s) = false, want true", t1, t2)
 	}
 }

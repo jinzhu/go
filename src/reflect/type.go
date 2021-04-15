@@ -1679,7 +1679,7 @@ func haveIdenticalUnderlyingType(T, V *rtype, cmpTags bool, compared map[cacheKe
 			if tf.name.name() != vf.name.name() {
 				return false
 			}
-			if !cmpTags && tf.typ.str != vf.typ.str {
+			if cmpTags && tf.typ.str != vf.typ.str {
 				return false
 			}
 
